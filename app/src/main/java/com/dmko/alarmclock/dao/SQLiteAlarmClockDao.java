@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.dmko.alarmclock.entity.Alarm;
 
@@ -43,14 +42,16 @@ public class SQLiteAlarmClockDao extends SQLiteOpenHelper implements AlarmClockD
         Cursor cursor = this.getWritableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME, null);
         ArrayList<Alarm> alarms = new ArrayList<>(cursor.getCount());
         while (cursor.moveToNext()) {
-            Alarm alarm = new Alarm();
-            alarm.setId(cursor.getInt(0));
-            alarm.setHour(cursor.getInt(1));
-            alarm.setMinute(cursor.getInt(2));
-            alarm.setActive(cursor.getInt(3) != 0);
-            alarms.add(alarm);
+            alarms.add(convertCursorRowToAlarm(cursor));
         }
         return alarms;
+    }
+
+    @Override
+    public Alarm getAlarmById(int id) {
+        Cursor cursor = this.getWritableDatabase().rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COL0 + " = " + id, null);
+        cursor.moveToNext();
+        return convertCursorRowToAlarm(cursor);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class SQLiteAlarmClockDao extends SQLiteOpenHelper implements AlarmClockD
         this.getWritableDatabase().delete(TABLE_NAME, COL0 + " = " + id, null);
     }
 
-    private ContentValues convertAlarmToContentValues(Alarm alarm){
+    private ContentValues convertAlarmToContentValues(Alarm alarm) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, alarm.getHour());
         contentValues.put(COL2, alarm.getMinute());
@@ -77,6 +78,14 @@ public class SQLiteAlarmClockDao extends SQLiteOpenHelper implements AlarmClockD
         return contentValues;
     }
 
+    private Alarm convertCursorRowToAlarm(Cursor cursor) {
+        Alarm alarm = new Alarm();
+        alarm.setId(cursor.getInt(0));
+        alarm.setHour(cursor.getInt(1));
+        alarm.setMinute(cursor.getInt(2));
+        alarm.setActive(cursor.getInt(3) != 0);
+        return alarm;
+    }
 }
 
 

@@ -11,16 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ListOfAlarmsActivity">
+        <activity android:name=".activity.ListOfAlarmsActivity" android:parentActivityName=".activity.ClockActivity"/>
+        <activity
+            android:name=".activity.AddAlarmActivity"
+            android:parentActivityName=".activity.ListOfAlarmsActivity" />
+        <activity
+            android:name=".activity.DeleteModifyAlarmActivity"
+            android:parentActivityName=".activity.ListOfAlarmsActivity" />
+        <activity android:name=".activity.ClockActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AddAlarmActivity" android:parentActivityName=".activity.ListOfAlarmsActivity"/>
-        <activity android:name=".activity.DeleteModifyAlarmActivity" android:parentActivityName=".activity.ListOfAlarmsActivity"/>
-        <receiver android:name=".receiver.AlarmReceiver"/>
+        <receiver android:name=".receiver.AlarmReceiver" />
     </application>
 
 </manifest>

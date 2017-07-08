@@ -50,10 +50,9 @@ public class AlarmAdapter extends BaseAdapter{
 
         Alarm alarm = (Alarm) getItem(position);
 
+        setActive.setChecked(alarm.isActive());
         setActive.setOnCheckedChangeListener(new SetAlarmListener(alarm, context));
         triggerTime.setText(String.format(Locale.US, "%02d:%02d", alarm.getHour(), alarm.getMinute()));
-        setActive.setChecked(alarm.isActive());
-
         return view;
     }
 }

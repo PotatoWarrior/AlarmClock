@@ -1,6 +1,7 @@
 package com.dmko.alarmclock.entity;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class Alarm implements Serializable {
     private int id;
@@ -54,5 +55,10 @@ public class Alarm implements Serializable {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(Locale.US, "id = %d, %02d:%02d, isActive = " + isActive(), getId(), getHour(), getMinute());
     }
 }
